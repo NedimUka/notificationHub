@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+// Required by the new version in the future
+option go_package = ".;notification";
+
+option java_multiple_files = true;
+option java_package = "company.grpc.notification";
+option java_outer_classname = "Notification";
+
+package notification;
+
+
+// The notification service definition.
+service Notification {
+  // Send a notification 
+  rpc SendNotification (NotificationRequest) returns (NotificationResponse) {}
+}
+
+
+
+// The request message containing Notification type and message.
+message NotificationRequest {
+  NotificationType notificationType = 1;
+  string messagePayload = 2;
+  string subject = 3;
+  string template = 4;
+
+  // Notification type includes all of the types of notifications that servie supports
+  enum NotificationType {
+    SMS_NOTIFICATION = 0;
+    MOBILE_NOTIFICATION = 1;
+    EMAIL_NOTIFICATION = 2;
+    WEBAPP_NOTIFICATION = 3;
+  }
+  // Contains list of receivers, depending on notification types
+  // SMS numbers , tokens for mobile apps, email adresses
+  repeated string receivers = 5;
+
+}
+
+// The response message containing sucess message
+message NotificationResponse {
+  string message = 1;
+}
